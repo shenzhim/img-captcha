@@ -6,8 +6,9 @@
 
 支持传入多张图片，随机选择某一张图片进行验证
 
-## [可运行example查看效果](/exampl/index.html)
 
-## 预览图如下
+## 运行起来大概是这样的^_^
 
-![example.gif](/exampl/example.gif)
+[查看example代码](/example/index.html)
+
+![example.gif](/example/example.gif)
