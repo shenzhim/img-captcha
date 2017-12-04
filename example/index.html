@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="../css/captcha.css">
+	</head>
+	<body>
+		<canvas id="canvas" width="350" height="200"></canvas>
+		<script src="../src/captcha.js"></script>
+		<script>
+			imgCaptcha('canvas', {
+				imgurl: ['../bgimg/demo.jpeg','../bgimg/demo1.jpeg','../bgimg/demo2.jpg','../bgimg/demo3.jpg'],
+				cw: 60,
+				ch: 60,
+				onSuccess: function() {
+					console.log("success");
+				},
+				onError: function() {
+					console.log("error");	
+				}
+			});
+		</script>
+	</body>
+</html>

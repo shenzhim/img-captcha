@@ -1,0 +1,105 @@
+@keyframes shake {
+    0%,to {
+        transform: translateZ(0)
+    }
+
+    10%,30%,50%,70%,90% {
+        transform: translate3d(-10px,0,0)
+    }
+
+    20%,40%,60%,80% {
+        transform: translate3d(10px,0,0)
+    }
+}
+.captcha-box {
+	position: relative;
+	background: #fff;
+    border: 1px solid #ccc;
+    padding: 0 10px;
+    box-sizing: content-box;
+}
+.captcha-box.shake {
+	animation: shake 1s;
+}
+.captcha-box .canvas-box {
+	overflow: hidden;
+	position: relative;
+}
+.canvas-box .captcha-result{
+	position: absolute;
+    left: 0;
+    width: 100%;
+    color: #fff;
+    bottom: -25px;
+    height: 24px;
+    text-indent: 16px;
+    font-size: 14px;
+    line-height: 24px;
+    -moz-transition: bottom .3s ease;
+    -o-transition: bottom .3s ease;
+    -webkit-transition: bottom .3s ease;
+    transition: bottom .3s ease;
+}
+.canvas-box .captcha-result.fail{
+	background-color: #de715b;
+	bottom: 0;
+}
+.canvas-box .captcha-result.success{
+	background-color: #5ebf70;
+	bottom: 0;
+}
+.captcha-box .captcha-bg {
+	display: block;
+}
+.captcha-box .captcha-clipcanvas {
+	position: absolute;
+    left: 20px;
+}
+.captcha-box .captcha-dragbar{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding-top: 8px;
+    position: relative;
+    box-sizing: border-box;
+}
+.captcha-dragbar .drag-track {
+	width: 100%;
+    height: 13px;
+    border-radius: 7px;
+    background: #e4e4e4;
+    position: relative;
+}
+.captcha-dragbar .drag-slider {
+    width: 40px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    background-color: #1296db;
+    background-image: url(../icon/slider.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 50%;
+    border-radius: 23px;
+    cursor: pointer;
+}
+.captcha-dragbar .drag-btn {
+	height: 22px;
+	margin-top: 10px;
+}
+.captcha-dragbar .drag-btn i{
+	float: right;
+	margin-right: 10px;
+}
+.captcha-dragbar .drag-btn .refresh {
+	height: 22px;
+	width: 22px;
+	background: url(../icon/refresh.png) center no-repeat;
+	background-size: 100%;
+}
+.captcha-dragbar .drag-btn .close {
+	height: 22px;
+	width: 22px;
+	background: url(../icon/close.png) center no-repeat;
+	background-size: 100%;
+}
