@@ -7,8 +7,12 @@
 支持传入多张图片，随机选择某一张图片进行验证
 
 
-## 运行起来大概是这样的^_^
+## 运行起来大概是这样的^_^（可能加载的有点慢）
 
 [查看example代码](/example/index.html)
 
 ![example.gif](/example/example.gif)
+
+#### 优化后的抠图算法，效果如下，相比而言，没有了黑边，体验更好点。
+
+![example2.gif](/example/example2.gif)
