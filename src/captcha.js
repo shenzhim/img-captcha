@@ -55,37 +55,43 @@
 	    return canvas;
 	}
 
-	function clipPath(canvas, alpha, x, y, isfill) {
-		var subw = parseInt(opts.cw / 6),
-	    	subh = parseInt(opts.ch / 6),
-	    	radius = Math.min(subw, subh),
-	    	clipw = subw * 5,
-	    	cliph = subh * 5,
-	    	ctx = canvas.getContext('2d');
+	function clipPath(ctx, startx, starty) {
+		startx = startx + 0.2;
+	    starty = starty + 0.2;
 
-	    ctx.fillStyle = "rgba(0,0,0, " + alpha + ")";
-	    if (isfill) {
-	    	ctx.fillRect(x, y, clipw, cliph);	
-	    } else {
-	    	ctx.strokeRect(x, y, clipw, cliph);
-	    }
+	    var subw = parseInt((opts.cw - 1) / 6),
+	    	subh = parseInt((opts.ch - 1) / 6),
+	    	radius = Math.min(subw, subh),
+	    	clipw = subw * 5 + 0.5,
+	    	cliph = subh * 5 + 0.5;
+
+	    ctx.beginPath()
+	    ctx.moveTo(startx, starty);
+	    ctx.lineTo(startx + clipw, starty);
+	    ctx.lineTo(startx + clipw, starty + parseInt(cliph / 2) - radius);
+	    ctx.arc(startx + clipw, starty + parseInt(cliph / 2), radius, -Math.PI / 2, Math.PI / 2, false);
+	    ctx.lineTo(startx + clipw, starty + cliph);
+	    ctx.lineTo(startx + clipw - (parseInt(clipw / 2) - radius), starty + cliph);
+	    ctx.arc(startx + parseInt(clipw / 2), starty + cliph, radius, 0, Math.PI, false);
+	    ctx.lineTo(startx, starty + cliph);
+	    ctx.lineTo(startx, starty);
+	    ctx.closePath();
+	}
+
+	function fillClip(canvas, startx, starty, alpha) {
+		var ctx = canvas.getContext('2d')
+		clipPath(ctx, startx, starty);
 		
+		ctx.fillStyle = "rgba(0,0,0, " + alpha + ")";
+	    ctx.fill();
+	}
+
+	function strokeClip(canvas, startx, starty) {
+		var ctx = canvas.getContext('2d');
+		clipPath(ctx, startx, starty);
 		
-		ctx.beginPath()
-		ctx.arc(x + clipw, y + parseInt(cliph / 2), radius, Math.PI / 2, -Math.PI / 2, true);
-		if (isfill) {
-			ctx.fill();
-		} else {
-			ctx.stroke();
-		}
-		
-		ctx.beginPath()
-		ctx.arc(x + parseInt(clipw / 2), y + cliph, radius, 0, Math.PI, false);
-		if (isfill) {
-			ctx.fill();
-		} else {
-			ctx.stroke();
-		}
+		ctx.strokeStyle = "#fff";
+	    ctx.stroke();
 	}
 	
 	function randomNum(min, max){
@@ -222,8 +228,7 @@
 				starty = startPoint.starty;
 
 			canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-			clipPath(canvas, 0.7, startx, starty, true);
-
+			fillClip(canvas, startx, starty, 0.7);
 			
 	    	var sourceCanvas = createCanvas(w, h);
 			var sctx = sourceCanvas.getContext('2d'); 
@@ -231,14 +236,17 @@
 			sctx.globalCompositeOperation = 'destination-in';
 
 			var destCanvas = createCanvas(opts.cw, opts.ch);
-			clipPath(destCanvas, 1, 0, 0, true);
+			fillClip(destCanvas, 0, 0, 1);
+
 			sctx.drawImage(destCanvas, startx, starty);
 				
 			var clipCanvas = createCanvas(opts.cw, opts.ch);
 			clipCanvas.id = 'captcha-clipcanvas';
 			clipCanvas.className = 'captcha-clipcanvas';
 			clipCanvas.getContext('2d').putImageData(sctx.getImageData(startx, starty, opts.cw, opts.ch), 0, 0);
-			clipPath(clipCanvas, 1, 0, 0, false);
+
+			strokeClip(clipCanvas, 0, 0);
+			
 			clipCanvas.style.top = starty + 'px';
 			captchaBox.appendChild(clipCanvas);
 
