@@ -1,8 +1,9 @@
 ;(function() {
 	var opts = {
 		imgurl: '',
-		cw: 60,
-		ch: 60,
+		clipWidth: 50,
+		clipHeight: 50,
+		clipBorderColor: '#f1f1f1',
 		precision: 5,
 		onSuccess: null,
 		onError: null,
@@ -59,8 +60,8 @@
 		startx = startx + 0.2;
 	    starty = starty + 0.2;
 
-	    var subw = parseInt((opts.cw - 1) / 6),
-	    	subh = parseInt((opts.ch - 1) / 6),
+	    var subw = parseInt((opts.clipWidth - 1) / 6),
+	    	subh = parseInt((opts.clipHeight - 1) / 6),
 	    	radius = Math.min(subw, subh),
 	    	clipw = subw * 5 + 0.5,
 	    	cliph = subh * 5 + 0.5;
@@ -90,7 +91,7 @@
 		var ctx = canvas.getContext('2d');
 		clipPath(ctx, startx, starty);
 		
-		ctx.strokeStyle = "#fff";
+		ctx.strokeStyle = opts.clipBorderColor;
 	    ctx.stroke();
 	}
 	
@@ -102,8 +103,8 @@
 	
 	function getStartPoint(w, h) {
 		var padding = 10,
-			startw = opts.cw + padding,
-			starth = opts.ch + padding;
+			startw = opts.clipWidth + padding,
+			starth = opts.clipHeight + padding;
 		if (w < startw * 2 || h < starth) return;	
 		
 		var startPoint = {
@@ -187,8 +188,8 @@
 
 		slider.addEventListener("touchstart", moveStart);
 		slider.addEventListener("mousedown", moveStart);
-		slider.addEventListener("touchmove", move);
-		slider.addEventListener("mousemove", move);
+		document.addEventListener("touchmove", move);
+		document.addEventListener("mousemove", move);
 		document.addEventListener('touchend', moveEnd)
 		document.addEventListener('mouseup', moveEnd)
 	}
@@ -235,15 +236,15 @@
 			sctx.drawImage(img, 0, 0, w, h);
 			sctx.globalCompositeOperation = 'destination-in';
 
-			var destCanvas = createCanvas(opts.cw, opts.ch);
+			var destCanvas = createCanvas(opts.clipWidth, opts.clipHeight);
 			fillClip(destCanvas, 0, 0, 1);
 
 			sctx.drawImage(destCanvas, startx, starty);
 				
-			var clipCanvas = createCanvas(opts.cw, opts.ch);
+			var clipCanvas = createCanvas(opts.clipWidth, opts.clipHeight);
 			clipCanvas.id = 'captcha-clipcanvas';
 			clipCanvas.className = 'captcha-clipcanvas';
-			clipCanvas.getContext('2d').putImageData(sctx.getImageData(startx, starty, opts.cw, opts.ch), 0, 0);
+			clipCanvas.getContext('2d').putImageData(sctx.getImageData(startx, starty, opts.clipWidth, opts.clipHeight), 0, 0);
 
 			strokeClip(clipCanvas, 0, 0);
 			
