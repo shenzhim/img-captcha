@@ -38,7 +38,14 @@
 	function createDragBar() {
 		var dragbar = document.createElement('div');
 		dragbar.className = "captcha-dragbar";
-		dragbar.innerHTML = '<div class="drag-track"></div><div id="drag-slider" class="drag-slider"></div><div class="drag-btn"><i id="drag-btn-close" class="close"></i><i id="drag-btn-refresh" class="refresh"></i></div>'
+		dragbar.innerHTML = `
+			<div class="drag-track"></div>
+			<div id="drag-slider" class="drag-slider"></div>
+			<div class="drag-btn">
+				<i id="drag-btn-close" class="close"></i>
+				<i id="drag-btn-refresh" class="refresh"></i>
+			</div>
+		`
 		return dragbar;
 	}
 
@@ -102,7 +109,7 @@
 	}
 	
 	function getStartPoint(w, h) {
-		var padding = 10,
+		var padding = 0,
 			startw = opts.clipWidth + padding,
 			starth = opts.clipHeight + padding;
 		if (w < startw * 2 || h < starth) return;	
@@ -133,10 +140,10 @@
 
 			setTimeout(function(){
 				slider.style.left = "10px";
-				clipcanvas.style.left = "20px";
+				clipcanvas.style.left = "10px";
 
 				opts.eventinfo.left = 10;
-				opts.eventinfo.clipleft = 20;
+				opts.eventinfo.clipleft = 10;
 			}, 500)
 			setTimeout( function(){
 				result.className = resultClass;
@@ -159,8 +166,15 @@
 				} else {
 					var disX = e.clientX - opts.eventinfo.currentX;
 				}
-				slider.style.left = opts.eventinfo.left + disX + "px";
-				clipcanvas.style.left = opts.eventinfo.clipleft + disX + "px";
+
+				var distSliderLeft = opts.eventinfo.left + disX;
+				var distClipLeft = opts.eventinfo.clipleft + disX;
+
+				// 判断拼图是否超出画布范围
+				if (10 <= distSliderLeft && distSliderLeft <= (opts.canvasWidth - opts.clipWidth -10)) {
+					slider.style.left = distSliderLeft + "px";
+					clipcanvas.style.left = distClipLeft + "px";
+				}
 
 				if (e.preventDefault) e.preventDefault();
 				return false;
@@ -219,6 +233,10 @@
 		img.onload = function() {
 			var w = canvas.width,
 				h = canvas.height;
+
+			// 向 opts 中设置全局可用的画布宽高
+			opts['canvasWidth'] = w;
+			opts['canvasHeight'] = h;
 
 			var startPoint = getStartPoint(w, h)
     		if (!startPoint) {
