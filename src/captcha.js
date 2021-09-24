@@ -171,7 +171,7 @@
 				var distClipLeft = opts.eventinfo.clipleft + disX;
 
 				// 判断拼图是否超出画布范围
-				if (10 <= distSliderLeft && distSliderLeft <= (opts.canvasWidth - opts.clipWidth -10)) {
+				if (10 <= distSliderLeft && distSliderLeft <= (opts.canvasWidth - opts.clipWidth)) {
 					slider.style.left = distSliderLeft + "px";
 					clipcanvas.style.left = distClipLeft + "px";
 				}
