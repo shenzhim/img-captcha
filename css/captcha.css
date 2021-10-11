@@ -15,7 +15,6 @@
 	position: relative;
 	background: #fff;
     border: 1px solid #ccc;
-    padding: 0 10px;
     box-sizing: content-box;
 }
 .captcha-box.shake {
@@ -53,7 +52,7 @@
 }
 .captcha-box .captcha-clipcanvas {
 	position: absolute;
-    left: 20px;
+    left: 10px;
 }
 .captcha-box .captcha-dragbar{
     margin-top: 5px;
